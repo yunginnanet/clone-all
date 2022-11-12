@@ -12,17 +12,21 @@ RESET="\e[0m"
 function _t() {
 	echo -e "\e[90m[$(date -u +'%H:%M:%S')]${RESET}"
 }
+function cln() {
+	# shellcheck disable=SC2001
+	echo "$*" | sed -z 's|\n| |g'
+}
 function log() {
-	echo -e "$(_t) ${LPLUS} $* ${RESET}"
+	echo -e "$(cln "$(_t) ${LPLUS} $* ${RESET}")"
 }
 function debug() {
-	echo -e "$(_t) ${LFOOB} \e[90m$*${RESET}"
+	echo -e "$(cln "$(_t) ${LFOOB} \e[90m$*${RESET}")"
 }
 function err() {
-	echo -e "$(_t) ${LFAIL} \e[31mError: \e[0m${*//fatal: /} ${RESET}"
+	echo -e "$(cln "$(_t) ${LFAIL} \e[31mERR \e[0m${*//fatal: /} ${RESET}")"
 }
 function fatal() {
-	err "${FATAL}FATAL${RESET}: $*"
+	err "${FATAL}[FATAL]${RESET}: $*"
 	exit 1
 }
 #-----------------------------------
@@ -31,33 +35,33 @@ function get() {
 	_PAGE=1
 	while :; do
 		_APIRES=$(curl -s "https://api.github.com/$_CONTEXT/$_USERNAME/repos?page=$_PAGE&per_page=100")
-		if [[ "$_APIRES" =~ "clone_url" ]]; then
-			_URLS=$(echo "$_APIRES" | grep "clone_url" | awk -F '"' '{print $4}')
-			if $_SSH; then _URLS=${_URLS//https:\/\//ssh:\/\/git@}; fi
-			while read -r line; do
-				if ! cd "${_DESTINATION}/${_USERNAME}"; then
-					fatal "failed to change directory to ${_DESTINATION}/${_USERNAME}"
-				fi
-				if _RES=$( (git clone "$line" >&1) 2>&1); then
-					log "${_RES}${LWOOT}"
-				elif [[ "$_RES" =~ "already exists" ]]; then
-					update "$(echo "$_RES" | awk -F "'" '{print $2}')"
-					continue
-				else
-					_REPO="$(echo "$line" | awk -F '/' '{print $NF}' | awk -F '.' '{print $0}')"
-					err "${_DESTINATION}/${_USERNAME}/ $_RES"
-					continue
-				fi
-			done < <(echo "$_URLS")
-			(("_PAGE = $_PAGE + 1"))
-		elif [[ "$_APIRES" =~ [a-zA-Z] ]]; then
-			echo -e "\e[1;31mbad response from API:\e[0m"
-			echo "$_APIRES"
-			exit 1
-		elif ! [[ "$_APIRES" =~ [a-zA-Z] ]]; then
-			echo "$_APIRES"
+		if ! [[ "$_APIRES" =~ "clone_url" ]]; then
+			if [[ "$_APIRES" =~ [a-zA-Z] ]]; then
+				echo "$_APIRES"
+				fatal "\e[1;31mbad response from API\e[0m"
+			fi
 			break
 		fi
+		_URLS=$(echo "$_APIRES" | grep "clone_url" | awk -F '"' '{print $4}')
+		if $_SSH; then _URLS=${_URLS//https:\/\//ssh:\/\/git@}; fi
+		while read -r line; do
+			cd "${_DESTINATION}/${_USERNAME}" || fatal "failed to change directory to ${_DESTINATION}/${_USERNAME}"
+
+			if _RES=$( (git clone "$line" >&1) 2>&1); then
+				log "${_RES}${LWOOT}"
+				continue
+			fi
+
+			if [[ "$_RES" =~ "already exists" ]]; then
+				update "$(echo "$_RES" | awk -F "'" '{print $2}')"
+				continue
+			fi
+			_REPO="$(echo "$line" | awk -F '/' '{print $NF}' | awk -F '.' '{print $0}')"
+			err "(${_REPO}) $_RES"
+			continue
+		done < <(echo "$_URLS")
+
+		(("_PAGE = $_PAGE + 1"))
 	done
 }
 
@@ -67,23 +71,20 @@ function update() {
 		return 1
 	fi
 	if ! _F=$( (git fetch >&1) 2>&1); then
-		# shellcheck disable=SC2001,SC2086
-		err "$(echo ${_F} | sed 's|\n| |g')"
+		err "(${1}) $_F"
 		return 1
 	fi
 	if ! _P=$( (git pull >&1) 2>&1); then
-		# shellcheck disable=SC2001,SC2086
-		err "$(echo ${_P} | sed 's|\n| |g')"
+		err "(${1}) $_P"
 		return 1
 	fi
 	# shellcheck disable=SC2076
 	if ! [[ "$_P" =~ "Already up to date." ]]; then
 		log "Updating '$1'...${LWOOT}"
 		return 0
-	else
-		debug "$1 already up to date"
-		return 0
 	fi
+	debug "$1 already up to date"
+	return 0
 }
 
 function setup() {
@@ -94,8 +95,8 @@ function setup() {
 	export _CONTEXT="users"
 	export _USERNAME="$1"
 	shift 1
-	if ! mkdir -p "$_DESTINATION/$_USERNAME"; then return 1; fi
-	if ! cd "$_DESTINATION/$_USERNAME"; then return 1; fi
+	mkdir -p "$_DESTINATION/$_USERNAME" || return 1
+	cd "$_DESTINATION/$_USERNAME" || return 1
 }
 
 export _SSH=false
