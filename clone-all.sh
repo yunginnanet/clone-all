@@ -104,7 +104,6 @@ if ! setup "$@"; then
 	fatal "Failed to setup directory structure!"
 fi
 targ="$1"
-if $_SSH; then targ="$2"; fi
 log "cloning all repos owned by $targ into $(pwd)/"
 get
 echo -e "\e[1;32mfin.\e[0m"
