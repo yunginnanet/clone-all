@@ -5,6 +5,7 @@ function update() {
 	_TARGET="${_DESTINATION}/${_USERNAME}/$1"
 	#debug "$(mkdir -vp "$_TARGET")"
 	if ! cd "$_TARGET"; then
+		log1
 		err "failed to change directory to update $1"
 		return 1
 	fi
@@ -19,10 +20,10 @@ function update() {
 		return 1
 	fi
 	# shellcheck disable=SC2076
-	if ! [[ "$_P" =~ "Already up to date." ]]; then
-		log0
+	if [[ "$_P" =~ "Already up to date." ]]; then
+		echo -e "Current"
 		return 0
 	fi
-	echo -e "Current"
+	log0
 	return 0
 }

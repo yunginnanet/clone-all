@@ -29,7 +29,7 @@ function log1() {
 	LAST=""
 }
 function log2() {
-	NEW="${LAST//Cloning/Updating}${REDIR}${*}... ${RESET}"
+	NEW="${LAST//Cloning/Updating}${REDIR}${RESET}"
 	echo -ne "\r$(cln "$(_t) ${LFOOB} ${NEW}")"
 	LAST=$NEW
 }
@@ -46,17 +46,4 @@ function err() {
 function fatal() {
 	err "${FATAL}[FATAL]${RESET}: $*"
 	exit 1
-}
-function testLogger() {
-	log "trying to yeet"
-	sleep 1
-	log0
-	log "trying to yort"
-	sleep 1
-	log1
-	log "trying to yeeeeeeeeeeet"
-	sleep 1
-	log2 "Slowing it down"
-	sleep 1
-	log0
 }
