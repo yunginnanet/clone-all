@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+set -e
 
-source ../src/1-logr.sh
+# shellcheck disable=SC1091
+source ./src/1-logr.sh 2&>/dev/null|| source ../src/1-logr.sh
 
 function testLogger() {
 	log "trying to yeet"

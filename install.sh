@@ -11,4 +11,5 @@ chmod +x "${_target}/clone-all"
 if ! [[ ":$PATH:" == *":$_target:"* ]]; then
 	echo "Your PATH is missing '$_target', consider adding it."
 fi
+cd ..
 echo "fin."
