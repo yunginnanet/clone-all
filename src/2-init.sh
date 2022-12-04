@@ -4,7 +4,7 @@ function setup() {
 	shopt -s extglob
 	_DESTINATION=${CLONEALL_DESTINATION:-"$HOME/Workshop"}
 	_DESTINATION="${_DESTINATION%%+(/)}"
-	_SSH=false
+	_SSH=${CLONEALL_SSH:-false}
 
 	if [ "$_DESTINATION" == "." ]; then
 		_DESTINATION=$(pwd)

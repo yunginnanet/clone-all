@@ -13,5 +13,5 @@ Clones and updates all github repos of a given user or organization. Supports SS
 
 ### Environment Variables
 
-  - `CLONEALL_SSH`: set/export this to true to enable ssh without the command-line flag
+  - `CLONEALL_SSH`: set/export this to `true` to enable fetching/pulling via ssh by default without flag
   - `CLONEALL_DESTINATION`: set/export this to the directory you want the cloned/updated repos to live
