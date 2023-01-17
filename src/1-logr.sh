@@ -9,6 +9,8 @@ LNOPE="\e[31mError\e[0m"
 FATAL="\e[1;31m"
 RESET="\e[0m"
 LAST=""
+LAST_TIME=""
+
 function _t() {
 	echo -e "\e[90m[$(date -u +'%H:%M:%S')]${RESET}"
 }
@@ -17,21 +19,24 @@ function cln() {
 	echo "$*" | sed -z 's|\n| |g'
 }
 function log() {
+	LAST_TIME="$(_t)"
 	LAST="${*}..."
-	echo -ne "$(cln "$(_t) ${LFOOB} ${LAST}")"
+	echo -ne "$(cln "${LAST_TIME} ${LFOOB} ${LAST}")"
 }
 function log0() {
-	echo -ne "\r$(cln "$(_t) ${LPLUS} ${LAST}${LWOOT}${RESET}")\n"
+	echo -ne "\r$(cln "${LAST_TIME} ${LPLUS} ${LAST}${LWOOT}${RESET}")\n"
 	LAST=""
+	LAST_TIME=""
 }
 function log1() {
-	echo -ne "\r$(cln "$(_t) ${LFAIL} ${LAST}${LNOPE}${RESET}")\n"
+	echo -ne "\r$(cln "${LAST_TIME} ${LFAIL} ${LAST}${LNOPE}${RESET}")\n"
 	LAST=""
+	LAST_TIME=""
 }
 function log2() {
 	NEW="${LAST//Cloning/Updating}${REDIR}${RESET}"
-	echo -ne "\r$(cln "$(_t) ${LFOOB} ${NEW}")"
-	LAST=$NEW
+	echo -ne "\r$(cln "${LAST_TIME} ${LFOOB} ${NEW}")"
+	LAST="$NEW"
 }
 function logln() {
 	echo -e "$(_t) ${LFOOB} ${*}"

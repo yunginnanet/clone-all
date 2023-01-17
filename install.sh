@@ -14,6 +14,7 @@ if ! [[ ":$PATH:" == *":$_target:"* ]]; then
 fi
 cd ..
 if ! ls -lah "${_target}/clone-all" >/dev/null; then
-	echo "installation failed somehow"
+	echo "installation failed somehow, clone-all should have existed at ${_target}/clone-all"
+	exit
 fi
 echo "clone-all installed to: ${_target}/clone-all"
