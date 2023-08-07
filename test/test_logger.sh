@@ -11,9 +11,13 @@ function testLogger() {
 	log "trying to yort"
 	sleep 1
 	log1
-	log "trying to yeeeeeeeeeeet"
+	log "Cloning a dog"
 	sleep 1
-	log2 "Slowing it down"
+	log2
+	sleep 1
+	log1
+	log "Cloning ya mum"
+	log2
 	sleep 1
 	log0
 }
