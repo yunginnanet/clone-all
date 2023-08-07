@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if ! setup "$@"; then
 	fatal "Failed to setup directory structure!"

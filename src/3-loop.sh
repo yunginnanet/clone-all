@@ -1,9 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 function get() {
 	_PAGE=1
 	while :; do
-		_APIRES=$(curl -s "https://api.github.com/$_CONTEXT/$_USERNAME/repos?page=$_PAGE&per_page=100")
+		_MYURL="https://api.github.com/$_CONTEXT/$_USERNAME/repos?page=$_PAGE&per_page=100"
+		debug "GET $_MYURL"
+		_APIRES=$(curl -s "$_MYURL")
 		if ! [[ "$_APIRES" =~ "clone_url" ]]; then
 			if [[ "$_APIRES" =~ [a-zA-Z] ]]; then
 				echo "$_APIRES"

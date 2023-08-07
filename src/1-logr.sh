@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 LPLUS="\e[0;33m[\e[0;32m+\e[0;33m]\e[0m"
 LFAIL="\e[0;33m[\e[1;31mx\e[0;33m]\e[0m"
