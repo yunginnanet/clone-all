@@ -8,6 +8,7 @@ function reqs() {
 
 function usage() {
 	echo -e "\n\t\tclone-all\neasily clone/update a target's github repos\n"
+	# shellcheck disable=SC2086
 	echo -e "usage: $(echo $0 | awk -F '/' '{print $NF}') [OPTION...] TARGET\n"
 	echo -e "OPTION\n"
 	echo -e "  -v \e[90m--verbose\e[0m\n\tenable debug output"
