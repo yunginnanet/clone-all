@@ -22,7 +22,7 @@ function setup() {
 	reqs
 	shopt -s extglob
 	_DESTINATION=${CLONEALL_DESTINATION:-"$HOME/Workshop"}
-	_SSH=${CLONEALL_SSH:-false}
+	_SSH=${CLONEALL_SSH:-"false"}
 	_APIKEY=${GITHUB_TOKEN:-""}
 	_CONTEXT="users"
 
