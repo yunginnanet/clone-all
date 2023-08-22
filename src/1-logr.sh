@@ -12,7 +12,7 @@ LAST=""
 LAST_TIME=""
 
 function _t() {
-	echo -e "\e[90m[$(date -u +'%H:%M:%S')]${RESET}"
+	echo -e "\e[90m[$(date +'%H:%M:%S')]${RESET}"
 }
 function cln() {
 	# shellcheck disable=SC2001
