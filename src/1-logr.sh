@@ -42,6 +42,7 @@ function logln() {
 	echo -e "$(_t) ${LFOOB} ${*}"
 }
 function debug() {
+	if ! $_DEBUG; then return 0; fi
 	if [ -z "$*" ]; then return 0; fi
 	echo -e "$(cln "$(_t) ${LFOOB} \e[90m$*${RESET}")"
 }

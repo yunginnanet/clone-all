@@ -25,6 +25,7 @@ function setup() {
 	_SSH=${CLONEALL_SSH:-"false"}
 	_APIKEY=${GITHUB_TOKEN:-""}
 	_CONTEXT="users"
+	_DEBUG=false
 
 	if [ "$_DESTINATION" == "." ]; then
 		_DESTINATION=$(pwd)
@@ -82,6 +83,7 @@ function setup() {
 	export _DESTINATION
 	export _SSH
 	export _USERNAME
+	export _DEBUG
 	shift 1
 	debug "$(mkdir -vp "${_DESTINATION}/${_USERNAME}")" || return 1
 }
