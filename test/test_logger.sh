@@ -20,6 +20,8 @@ function testLogger() {
 	log2
 	sleep 1
 	log0
+	log "Cloning a parakeet"
+	log3
 }
 
 testLogger

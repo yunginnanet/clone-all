@@ -21,7 +21,7 @@ function update() {
 	fi
 	# shellcheck disable=SC2076
 	if [[ "$_P" =~ "Already up to date." ]]; then
-		echo -e "Current"
+		log3
 		return 0
 	fi
 	log0

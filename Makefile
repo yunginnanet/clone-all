@@ -5,11 +5,10 @@ CLONEALL_INSTALL_TARGET := ${HOME}/.local/bin
 	export CLONEALL_BUILD_TARGET
 	export CLONEALL_INSTALL_TARGET
 
-all: .EXPORT_ALL_VARIABLES build install
+all: .EXPORT_ALL_VARIABLES build
 
 build: .EXPORT_ALL_VARIABLES
 	./tools/build.sh
-
 clean:
 	rm -v clone-all
 
@@ -18,3 +17,5 @@ install: .EXPORT_ALL_VARIABLES build
 
 uninstall: .EXPORT_ALL_VARIABLES
 	rm -v "${CLONEALL_INSTALL_TARGET}"
+lint:
+	shellcheck src/*

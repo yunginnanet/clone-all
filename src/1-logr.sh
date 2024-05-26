@@ -3,6 +3,7 @@
 LPLUS="\e[0;33m[\e[0;32m+\e[0;33m]\e[0m"
 LFAIL="\e[0;33m[\e[1;31mx\e[0;33m]\e[0m"
 LFOOB="\e[0;33m[\e[90m-\e[0;33m]\e[0m"
+DIMGR="\e[90m"
 REDIR="\e[0;90m"
 LWOOT="\e[0;32mSuccess\e[0m"
 LNOPE="\e[31mError\e[0m"
@@ -16,11 +17,11 @@ function _t() {
 }
 function cln() {
 	# shellcheck disable=SC2001
-	echo "$*" | sed -z 's|\n| |g'
+	echo "$*" | sed -z 's|\n||g'
 }
 function log() {
 	LAST_TIME="$(_t)"
-	LAST="${*}..."
+	LAST="${*}... "
 	echo -ne "$(cln "${LAST_TIME} ${LFOOB} ${LAST}")"
 }
 function log0() {
@@ -35,8 +36,14 @@ function log1() {
 }
 function log2() {
 	NEW="${LAST//Cloning/Updating}${REDIR}${RESET}"
-	echo -ne "\r$(cln "${LAST_TIME} ${LFOOB} ${NEW}")"
+	echo -ne "\r$(cln "${LAST_TIME} ${LFOOB} ${NEW}${RESET}")"
 	LAST="$NEW"
+}
+function log3() {
+	NEW="${LAST}${DIMGR}Current${RESET}"
+	echo -ne "\r$(cln "${LAST_TIME} ${LFOOB} ${NEW}${RESET}\n")"
+	LAST=""
+	LAST_TIME=""
 }
 function logln() {
 	echo -e "$(_t) ${LFOOB} ${*}"
