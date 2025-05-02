@@ -72,9 +72,8 @@ function setup() {
 	done
 
 	if [[ "$_USERNAME" == "" ]]; then
-		fatal "need target github user"
 		usage
-		exit 1
+		fatal "need target github user"
 	fi
 
 	_DESTINATION="${_DESTINATION%%+(/)}"
@@ -85,5 +84,6 @@ function setup() {
 	export _USERNAME
 	export _DEBUG
 	shift 1
+
 	debug "$(mkdir -vp "${_DESTINATION}/${_USERNAME}")" || return 1
 }

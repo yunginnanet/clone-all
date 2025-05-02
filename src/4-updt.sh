@@ -9,12 +9,12 @@ function update() {
 		err "failed to change directory to update $1"
 		return 1
 	fi
-	if ! _F=$( (git fetch >&1) 2>&1); then
+	if ! _F=$( (git -c "core.askPass=true" fetch >&1) 2>&1); then
 		log1
 		err "$_F"
 		return 1
 	fi
-	if ! _P=$( (git pull >&1) 2>&1); then
+	if ! _P=$( (git -c "core.askPass=true" pull >&1) 2>&1); then
 		log1
 		err "$_P"
 		return 1

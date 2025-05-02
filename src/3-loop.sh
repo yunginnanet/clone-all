@@ -19,7 +19,7 @@ function get() {
 			_REPO="$(echo "$line" | awk -F '/' '{print $NF}' | awk -F '.' '{print $0}' | sed 's|.git||g')"
 			_TARGET="${_DESTINATION}/${_USERNAME}/${_REPO}"
 			log "Cloning '$_REPO'"
-			if _RES=$( (git clone "$line" "$_TARGET" >&1) 2>&1); then
+			if _RES=$( (git -c "core.askPass=true" clone "$line" "$_TARGET" >&1) 2>&1); then
 				log0
 				continue
 			fi
