@@ -9,6 +9,7 @@ all: .EXPORT_ALL_VARIABLES build
 
 build: .EXPORT_ALL_VARIABLES
 	./tools/build.sh
+
 clean:
 	rm -v clone-all
 
@@ -16,6 +17,7 @@ install: .EXPORT_ALL_VARIABLES build
 	./tools/install.sh
 
 uninstall: .EXPORT_ALL_VARIABLES
-	rm -v "${CLONEALL_INSTALL_TARGET}"
+	rm -v "${CLONEALL_INSTALL_TARGET}/clone-all" || true
+
 lint:
 	shellcheck src/*
